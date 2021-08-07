@@ -102,7 +102,6 @@ app.post("/api/rules", async (req, res) => {
 });
 
 const streamTweets = (socket, token) => {
-  let stream;
   const config = {
     url: streamURL,
     auth: {
@@ -111,17 +110,8 @@ const streamTweets = (socket, token) => {
     timeout: 31000,
   };
 
-  const userConfig = {
-    url: '',
-    auth: {
-      bearer: token,
-    },
-    timeout: 31000,
-  };
-
   try {
     const stream = request.get(config);
-
     stream
       .on("data", (data) => {
         try {
@@ -161,7 +151,7 @@ io.on("connection", async (socket) => {
   try {
     const token = BEARER_TOKEN;
     io.emit("connect", "Client connected");
-    const stream = streamTweets(io, token);
+    streamTweets(io, token);
   } catch (e) {
     io.emit("authError", authMessage);
   }

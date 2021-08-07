@@ -21,8 +21,8 @@ let timeout = 0;
 const streamURL = new URL(
   "https://api.twitter.com/2/tweets/search/stream?tweet.fields=context_annotations&expansions=author_id&user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url"
 );
-const rulesURL = new URL(
-  "https://api.twitter.com/2/tweets/search/stream/rules"
+const trendsURL = new URL(
+  "https://api.twitter.com/1.1/trends/place.json?id=20070458"
 );
 const errorMessage = {
   title: "Please Wait",
@@ -45,14 +45,13 @@ app.get('/test', async (req, res, next) => {
   res.send({ message: 'Awesome it works 🐻' });
 });
 
-app.get("/api/rules", async (req, res) => {
+app.get("/api/trends", async (req, res) => {
   if (!BEARER_TOKEN) {
     res.status(400).send(authMessage);
   }
-
   const token = BEARER_TOKEN;
   const requestConfig = {
-    url: rulesURL,
+    url: trendsURL,
     auth: {
       bearer: token,
     },
@@ -74,32 +73,6 @@ app.get("/api/rules", async (req, res) => {
   }
 });
 
-app.post("/api/rules", async (req, res) => {
-  if (!BEARER_TOKEN) {
-    res.status(400).send(authMessage);
-  }
-
-  const token = BEARER_TOKEN;
-  const requestConfig = {
-    url: rulesURL,
-    auth: {
-      bearer: token,
-    },
-    json: req.body,
-  };
-
-  try {
-    const response = await post(requestConfig);
-
-    if (response.statusCode === 200 || response.statusCode === 201) {
-      res.send(response);
-    } else {
-      throw new Error(response);
-    }
-  } catch (e) {
-    res.send(e);
-  }
-});
 
 const streamTweets = (socket, token) => {
   const config = {

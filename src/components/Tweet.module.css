@@ -5,9 +5,8 @@
   border-radius: .5rem;
   padding: 1rem 1rem 1rem 1rem;
   display: grid;
-  grid-template-columns: 1fr 10fr;
+  grid-template-columns: 1fr minmax(0,10fr);
   grid-gap: 0.5rem;
-  
 }
 .profileImage {
   border-radius: 50%;

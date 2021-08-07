@@ -1,6 +1,29 @@
-.tweet{
-  width: 90%;
+.tweet {
+  width: 100%;
   margin: 1rem auto;
-  border: 1px solid brown;
+  border: 2px solid pink;
+  border-radius: .5rem;
   padding: 1rem 1rem 1rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  grid-gap: 0.5rem;
+  
+}
+.profileImage {
+  border-radius: 50%;
+  border: 2px solid #F06E85;
+}
+.tweetDetails {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  font-style: italic;
+}
+.tweetText {
+  margin-top: 0;
+  font-weight: bold;
+}
+.tweetedAt {
+  margin-left: auto;
+  padding: 0 2rem 0 2rem;
 }

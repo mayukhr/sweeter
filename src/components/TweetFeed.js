@@ -77,7 +77,6 @@ const TweetFeed = () => {
             error={message}
             styleType="success"
           />
-          {/* <Spinner /> */}
         </div>
       );
     }
@@ -109,7 +108,6 @@ const TweetFeed = () => {
               styleType="success"
             />
           </div>
-          {/* <Spinner /> */}
         </React.Fragment>
       );
     }

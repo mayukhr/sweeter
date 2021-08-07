@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import Tweet from "./Tweet";
 import socketIOClient from "socket.io-client";
 import ErrorMessage from "./ErrorMessage";
-// import Spinner from "./Spinner";
+import styles from './TweetFeed.module.css';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -132,7 +132,7 @@ const TweetFeed = () => {
   };
 
   return (
-    <div>
+    <div className={styles.tweetFeed}>
       {reconnectMessage()}
       {errorMessage()}
       {waitingMessage()}

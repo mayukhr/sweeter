@@ -1,11 +1,21 @@
-import React from "react";
+// import React from "react";
+import styles from './Tweet.module.css';
 
+//TODO: add a key!!!!
 const Tweet = ({ json }) => {
-  const { id } = json.data;
+  const { data: {author_id, text}, includes: {users:[user]} } = json || {};
+  const {created_at, name, profile_image_url, username} = user || {};
   console.log(json);
   
   return (
-    <div>{JSON.stringify(json)}</div>
+    <div className={styles.tweet}>
+      Author: {author_id}
+      Text: {text}
+      URL: {profile_image_url}
+      Created at: {created_at}
+      name: {name}
+      Username: {username}
+    </div>
   )
 };
 

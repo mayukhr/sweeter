@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react";
-import Tweet from "./Tweet";
+import Tweet from "../Tweet/Tweet";
 import socketIOClient from "socket.io-client";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "../ErrorMessage";
 import styles from './TweetFeed.module.css';
 
 const reducer = (state, action) => {

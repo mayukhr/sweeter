@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import NavBar from './NavBar';
-import TweetFeed from './TweetFeed';
-import TrendsList from './TrendsList'
+import NavBar from './NavBar/NavBar';
+import TweetFeed from './TweetFeed/TweetFeed';
+import TrendsList from './TrendsList/TrendsList';
 
 function App() {
   return (

@@ -2,18 +2,16 @@ import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from "d3";
 import d3Cloud from "d3-cloud";
-import './TrendCloud.module.css';
+import styles from './TrendCloud.module.css';
 
 const Trend = ({data}) => {
   const [cloud, setCloud] = useState(null);
-
-  const margin = { top: 30, right: 50, bottom: 30, left: 50 };
-  const width = 800 - margin.left - margin.right;
+  const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+  const width = 600 - margin.left - margin.right;
   const height = 600 - margin.top - margin.bottom;
-  
-  useEffect(() => {
-    const fontSize = d3.scalePow().exponent(5).domain([0, 1]).range([40, 80]);
 
+  useEffect(() => {
+    const fontSize = d3.scalePow(8).exponent(5).domain([0, 1]).range([10, 40]);
     d3Cloud()
       .size([width, height])
       .words(data)
@@ -32,7 +30,7 @@ const Trend = ({data}) => {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return (
-    <svg width={800} height={600}>
+    <svg viewBox="0 0 700 550" className={styles.svgContent}>
       <g transform={`translate(${margin.left},${margin.top})`}>
         <g transform={`translate(${width / 2},${height / 2})`}>
           {

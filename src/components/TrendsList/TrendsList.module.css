@@ -1,5 +1,9 @@
-.tagCloud {
+.borderWrap {
+    border: 2px solid #F06E85;
+    border-radius: .5rem;
+}
+.svgContainer {
+    padding: 5rem 1rem 1rem 1rem;
     width: 90%;
     margin: auto;
-    padding-top: 5rem;
 }

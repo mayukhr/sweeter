@@ -18,9 +18,11 @@ const TrendsList = () => {
     useEffect(() => getTrends(), []);
 
     return (
-        // <div className={styles.tagCloud}>   
-            <TrendCloud data={trends}/>
-        // </div>
+        <div className={styles.svgContainer}>
+            <div className={styles.borderWrap}>
+                <TrendCloud data={trends}/>
+            </div>
+        </div>
     );
     
 };

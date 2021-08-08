@@ -94,21 +94,17 @@ const TweetFeed = () => {
 
   const waitingMessage = () => {
     const message = {
-      title: "Still working",
-      detail: "Waiting for new Tweets to be posted",
+      title: "Loading.",
+      detail: "Waiting for new Tweets to be posted..",
     };
 
     if (isWaiting) {
       return (
-        <React.Fragment>
-          <div>
-            <ErrorMessage
-              key={message.title}
-              error={message}
-              styleType="success"
-            />
-          </div>
-        </React.Fragment>
+        <ErrorMessage
+          key={message.title}
+          error={message}
+          styleType="success"
+        />
       );
     }
   };

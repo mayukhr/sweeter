@@ -18,9 +18,7 @@ const Trend = ({data}) => {
       .rotate(function() {
         return ~~(Math.random() * 2) * 90;
       })
-      .fontSize(function(d, i) {
-        return fontSize(Math.random());
-      })
+      .fontSize(() => fontSize(Math.random()))
       .fontWeight(["bold"])
       .text(tag=>tag.name)
       .on("end", words => setCloud(words))
@@ -58,7 +56,7 @@ const Trend = ({data}) => {
 };
 
 Trend.propTypes = {
-  trends: PropTypes.array
+  data: PropTypes.array
 };
 
 export default Trend;

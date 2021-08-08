@@ -9,7 +9,6 @@ require('dotenv').config();
 
 const app = express();
 let port = process.env.PORT || 3000;
-const post = util.promisify(request.post);
 const get = util.promisify(request.get);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,11 +29,7 @@ const errorMessage = {
 };
 const authMessage = {
   title: "Could not authenticate",
-  details: [
-    `Please make sure your bearer token is correct. 
-      If using Glitch, remix this app and add it to the .env file`,
-  ],
-  type: "https://developer.twitter.com/en/docs/authentication",
+  detail: 'Please make sure your bearer token is correct.'
 };
 const sleep = async (delay) => {
   return new Promise((resolve) => setTimeout(() => resolve(true), delay));

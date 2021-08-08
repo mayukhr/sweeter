@@ -8,7 +8,7 @@ const NavBar = () => {
                 <NavLink to='/'>
                     <img className={styles.icon} src='sweeterPink.png' alt='logo' />
                 </NavLink>
-                <NavLink to='/trends' className={styles.link} activeStyle> Trends </NavLink>
+                <NavLink to='/trends' className={styles.link}> Trends </NavLink>
             </div>
         </div>
     )

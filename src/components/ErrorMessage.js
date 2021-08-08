@@ -1,36 +1,16 @@
-import React from "react";
+import PropTypes from 'prop-types';
+import styles from './ErrorMessage.module.css';
 
-const ErrorMessage = ({ error, styleType }) => {
-  const errorDetails = () => {
-    if (error.details) {
-      return error.details.map(detail => <p key={detail}>{detail}</p>);
-    } else if (error.detail) {
-      return <p key={error.detail}>{error.detail}</p>;
-    }
-  };
-
-  const errorType = () => {
-    if (error.type) {
-      return (
-        <em>
-          See
-          <a href={error.type} target="_blank" rel="noopener noreferrer">
-            {" "}
-            Twitter documentation{" "}
-          </a>
-          for further details.
-        </em>
-      );
-    }
-  };
-
+const ErrorMessage = ({ error: {detail, title } }) => {
   return (
-    <div className={`ui message ${styleType}`}>
-      <div className="header">{error.title}</div>
-      {errorDetails()}
-      {errorType()}
+    <div className={styles.message}>
+      <p key={detail}>{`${title}. ${detail}`}</p>
     </div>
   );
+};
+
+ErrorMessage.propTypes = {
+  data: PropTypes.array
 };
 
 export default ErrorMessage;

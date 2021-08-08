@@ -20,7 +20,7 @@ const Trend = ({data}) => {
       })
       .fontSize(() => fontSize(Math.random()))
       .fontWeight(["bold"])
-      .text(tag=>tag.name)
+      .text(tag=>`${tag.name} (${tag.tweet_volume})`)
       .on("end", words => setCloud(words))
       .start();
   }, [data, width, height]);

@@ -10,6 +10,6 @@
 # DESKTOP DEMO:
 ![](demo_screenshots/mobile1.png)
 
-![](demo_screenshots/mobile1.png)
+![](demo_screenshots/mobile2.png)
 
 

@@ -1,0 +1,69 @@
+import {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
+import * as d3 from "d3";
+import d3Cloud from "d3-cloud";
+import './TrendCloud.module.css';
+
+const Trend = ({data}) => {
+  const [cloud, setCloud] = useState(null);
+
+  const margin = { top: 30, right: 50, bottom: 30, left: 50 };
+  const width = 800 - margin.left - margin.right;
+  const height = 600 - margin.top - margin.bottom;
+  
+  useEffect(() => {
+    const fontSize = d3.scalePow().exponent(5).domain([0, 1]).range([40, 80]);
+
+    d3Cloud()
+      .size([width, height])
+      .words(data)
+      .rotate(function() {
+        return ~~(Math.random() * 2) * 90;
+      })
+      .fontSize(function(d, i) {
+        return fontSize(Math.random());
+      })
+      .fontWeight(["bold"])
+      .text(tag=>tag.name)
+      .on("end", words => setCloud(words))
+      .start();
+  }, [data, width, height]);
+
+  let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+  return (
+    <svg width={800} height={600}>
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        <g transform={`translate(${width / 2},${height / 2})`}>
+          {
+            cloud?.map?.((word, i) => (
+              <text
+                key={word.text}
+                style={{
+                  fill: color(i),
+                  fontSize: word.size + "px",
+                  fontFamily: word.font
+                }}
+                textAnchor="middle"
+                transform={`translate(${word.x},${word.y}) rotate(${
+                  word.rotate
+                })`}
+              >
+                {word.text}
+              </text>
+            ))}
+        </g>
+      </g>
+    </svg>
+  );
+  
+};
+
+Trend.propTypes = {
+  trends: PropTypes.array
+};
+
+export default Trend;
+// <li>
+  //   <span>{`${title} (${count})`}</span>
+  // </li>

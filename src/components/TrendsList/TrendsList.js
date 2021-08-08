@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './TrendsList.module.css';
 import axios from 'axios';
+import TrendCloud from '../TrendCloud/TrendCloud';
 
 const TrendsList = () => {
     const [trends, setTrends] = useState([]);
@@ -8,8 +9,8 @@ const TrendsList = () => {
     function getTrends() {
         axios.get('/api/trends')
             .then(response => {
-                console.log(response);
                 setTrends(response?.data?.body[0].trends);
+                // setTrends(response?.data?.body[0].trends.map(item=> `${item.name} (${item.tweet_volume})`));
             })
             .catch(error => console.log(error.message));
     }
@@ -17,21 +18,9 @@ const TrendsList = () => {
     useEffect(() => getTrends(), []);
 
     return (
-        <div className={styles.tagCloud}>
-            <ul>
-                { trends.map((trend, index) => {
-                    return (
-                        <li key={index}>
-                        <a href={trend.url}>{trend.name}</a>
-                        {trend.tweet_volume && (
-                            <span className='tweet_volume'>{trend.tweet_volume}</span>
-                        )}
-                        </li>
-                    )
-                    })
-                }
-            </ul>
-        </div>
+        // <div className={styles.tagCloud}>   
+            <TrendCloud data={trends}/>
+        // </div>
     );
     
 };

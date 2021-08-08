@@ -72,11 +72,7 @@ const TweetFeed = () => {
       return (
         <div>
           <ErrorMessage key={error.title} error={error} styleType="warning" />
-          <ErrorMessage
-            key={message.title}
-            error={message}
-            styleType="success"
-          />
+          <ErrorMessage key={message.title} error={message} styleType="success"/>
         </div>
       );
     }
@@ -116,11 +112,12 @@ const TweetFeed = () => {
   const showTweets = () => {
     if (tweets.length > 0) {
       return (
-        <React.Fragment>
+        <>
+          <button className={styles.pauseBtn} type="button"> Pause </button>
           {tweets.map((tweet) => (
             <Tweet key={tweet.data.id} json={tweet} />
           ))}
-        </React.Fragment>
+        </>
       );
     }
   };

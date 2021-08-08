@@ -3,3 +3,16 @@
   margin: auto;
   padding-top: 5rem;
 }
+
+.pauseBtn {
+  border: none;
+  background: #F06E85;
+  width: 21rem;
+  color: white;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: larger;
+}

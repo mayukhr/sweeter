@@ -11,7 +11,7 @@ const Trend = ({data}) => {
   const height = 600 - margin.top - margin.bottom;
 
   useEffect(() => {
-    const fontSize = d3.scalePow(8).exponent(5).domain([0, 1]).range([10, 40]);
+    const fontSize = d3.scalePow(8).exponent(5).domain([0, 1]).range([15, 40]);
     d3Cloud()
       .size([width, height])
       .words(data)
@@ -30,7 +30,7 @@ const Trend = ({data}) => {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return (
-    <svg viewBox="0 0 700 550" className={styles.svgContent}>
+    <svg viewBox="0 0 700 650" className={styles.svgContent}>
       <g transform={`translate(${margin.left},${margin.top})`}>
         <g transform={`translate(${width / 2},${height / 2})`}>
           {
@@ -62,6 +62,3 @@ Trend.propTypes = {
 };
 
 export default Trend;
-// <li>
-  //   <span>{`${title} (${count})`}</span>
-  // </li>

@@ -2,13 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const util = require("util");
 const request = require("request");
-const path = require("path");
 const socketIo = require("socket.io");
 const http = require("http");
 require('dotenv').config();
 
 const app = express();
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 3001;
 const get = util.promisify(request.get);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +16,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
 let timeout = 0;
+let isDisconnected = false;
 const streamURL = new URL(
   "https://api.twitter.com/2/tweets/search/stream?tweet.fields=context_annotations&expansions=author_id&user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url"
 );
@@ -88,7 +88,7 @@ const streamTweets = (socket, token) => {
             socket.emit("error", json);
             reconnect(stream, socket, token);
           } else {
-            if (json.data) {
+            if (json.data && !isDisconnected) {
               socket.emit("tweet", json);
             } else {
               socket.emit("authError", json);
@@ -119,21 +119,22 @@ io.on("connection", async (socket) => {
   try {
     const token = BEARER_TOKEN;
     io.emit("connect", "Client connected");
-    streamTweets(io, token);
+    socket.on('disconnect', function () {
+      console.log('user disconnected');
+    });
+    socket.on('resume', () => {
+      isDisconnected = false;
+    });
+    socket.on('pause stream', () => {
+      isDisconnected = true;
+      socket.disconnect();
+    });
+    if(!isDisconnected) {
+      streamTweets(io, token);
+    }
   } catch (e) {
     io.emit("authError", authMessage);
   }
 });
-
-console.log("NODE_ENV is", process.env.NODE_ENV);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../build")));
-  app.get("*", (request, res) => {
-    res.sendFile(path.join(__dirname, "../build", "index.html"));
-  });
-} else {
-  port = 3001;
-}
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

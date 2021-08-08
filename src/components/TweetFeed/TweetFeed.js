@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Tweet from "../Tweet/Tweet";
 import socketIOClient from "socket.io-client";
 import ErrorMessage from "../ErrorMessage";
@@ -26,41 +26,14 @@ const reducer = (state, action) => {
 };
 
 const TweetFeed = () => {
+  const [isPaused, setIsPaused] = useState(false);
   const initialState = {
     tweets: [],
     error: {},
     isWaiting: true,
   };
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const { tweets, error, isWaiting } = state;
-
-  const streamTweets = () => {
-    let socket;
-
-    if (process.env.NODE_ENV === "development") {
-      socket = socketIOClient("http://localhost:3001/");
-    } else {
-      socket = socketIOClient("/");
-    }
-
-    socket.on("connect", () => {});
-    socket.on("tweet", (json) => {
-      if (json.data) {
-        dispatch({ type: "add_tweet", payload: json });
-      }
-    });
-    socket.on("heartbeat", (data) => {
-      dispatch({ type: "update_waiting" });
-    });
-    socket.on("error", (data) => {
-      dispatch({ type: "show_error", payload: data });
-    });
-    socket.on("authError", (data) => {
-      console.log("data =>", data);
-      dispatch({ type: "add_errors", payload: [data] });
-    });
-  };
 
   const reconnectMessage = () => {
     const message = {
@@ -68,7 +41,7 @@ const TweetFeed = () => {
       detail: "Please wait while we reconnect to the stream.",
     };
 
-    if (error && error.detail) {
+    if (error && error.detail && !isPaused) {
       return (
         <div>
           <ErrorMessage key={error.title} error={error} styleType="warning" />
@@ -81,9 +54,9 @@ const TweetFeed = () => {
   const errorMessage = () => {
     const { errors } = state;
 
-    if (errors && errors.length > 0) {
+    if (errors && errors.length > 0  && !isPaused) {
       return errors.map((error) => (
-        <ErrorMessage key={error.title} error={error} styleType="negative" />
+        error.title?<ErrorMessage key={error.title} error={error} styleType="negative" />:''
       ));
     }
   };
@@ -94,7 +67,7 @@ const TweetFeed = () => {
       detail: "Waiting for new Tweets to be posted..",
     };
 
-    if (isWaiting) {
+    if (isWaiting && !isPaused) {
       return (
         <ErrorMessage
           key={message.title}
@@ -106,14 +79,39 @@ const TweetFeed = () => {
   };
 
   useEffect(() => {
-    streamTweets();
-  }, []);
+    console.log('Use EFFECT !!!!!!');
+    const socket = socketIOClient("http://localhost:3001/");
+    if(!isPaused) {
+      socket.emit("resume");
+      socket.on("tweet", (json) => {
+        if (json.data) {
+          dispatch({ type: "add_tweet", payload: json });
+        }
+      });
+      socket.on("heartbeat", (data) => {
+        dispatch({ type: "update_waiting" });
+      });
+      socket.on("error", (data) => {
+        dispatch({ type: "show_error", payload: data });
+      });
+      socket.on("authError", (data) => {
+        console.log("data =>", data);
+        dispatch({ type: "add_errors", payload: [data] });
+      });
+    } else {
+      socket.emit('pause stream');
+    }
+  }, [isPaused]);
+
+  const handlePause = () => {
+    setIsPaused(!isPaused);
+  };
 
   const showTweets = () => {
     if (tweets.length > 0) {
       return (
         <>
-          <button className={styles.pauseBtn} type="button"> Pause </button>
+          <button className={styles.pauseBtn} type="button" onClick={handlePause}> {isPaused ? 'Play' : 'Pause'} </button>
           {tweets.map((tweet) => (
             <Tweet key={tweet.data.id} json={tweet} />
           ))}

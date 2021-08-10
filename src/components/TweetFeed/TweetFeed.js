@@ -79,7 +79,6 @@ const TweetFeed = () => {
   };
 
   useEffect(() => {
-    console.log('Use EFFECT !!!!!!');
     const socket = socketIOClient("http://localhost:3001/");
     if(!isPaused) {
       socket.emit("resume");

@@ -18,7 +18,9 @@ const BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
 let timeout = 0;
 let isDisconnected = false;
 const streamURL = new URL(
-  "https://api.twitter.com/2/tweets/search/stream?tweet.fields=context_annotations&expansions=author_id&user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url"
+  'https://api.twitter.com/2/tweets/sample/stream?expansions=author_id&user.fields=profile_image_url&tweet.fields=created_at'
+
+  // "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=context_annotations&expansions=author_id&user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url"
 );
 const trendsURL = new URL(
   "https://api.twitter.com/1.1/trends/place.json?id=20070458"

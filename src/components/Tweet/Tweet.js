@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styles from './Tweet.module.css';
 import moment from 'moment';
 
@@ -5,6 +6,20 @@ const Tweet = ({ json }) => {
   const { data: {text}, includes: {users:[user]} } = json || {};
   const {created_at, name, profile_image_url, username} = user || {};
   const tweeted_at = moment(created_at).format('MM/DD/yyyy HH:mm:ss');
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  useEffect(() => {
+      const image = new Image();
+      image.src = profile_image_url;
+      image.onload = () => setIsImageLoaded(true);
+      
+      return () => {
+        image.onload = null;
+      };
+    }, [profile_image_url]);
+  
+    if (!isImageLoaded) {
+      return null;
+    }
 
   return (
     <div className={styles.tweet}>

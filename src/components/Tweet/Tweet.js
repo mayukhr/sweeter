@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import styles from './Tweet.module.css';
 import moment from 'moment';
 
@@ -35,4 +35,4 @@ const Tweet = ({ json }) => {
   )
 };
 
-export default Tweet;
+export default memo(Tweet);
